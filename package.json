@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@vtfk/azure-storage-blob": "^1.0.3",
-    "@vtfk/svarut": "^1.1.1"
+    "@vtfk/svarut": "^1.1.1",
+    "mongoose": "^5.8.9"
   }
 }
