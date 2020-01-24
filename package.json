@@ -1,0 +1,28 @@
+{
+  "name": "azf-svarut",
+  "version": "1.0.0",
+  "description": "Azure function that queues SvarUT sending",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "standard && npm audit"
+  },
+  "keywords": [
+    "vtfk",
+    "azure",
+    "azure",
+    "function",
+    "svarut"
+  ],
+  "author": "Mats Andreassen <mats.andreassen@vtfk.no>",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^14.3.1"
+  },
+  "dependencies": {
+    "@vtfk/azure-storage-blob": "^1.0.3",
+    "@vtfk/svarut": "^1.1.1"
+  }
+}
