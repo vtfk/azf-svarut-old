@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "standard && npm audit",
-    "dev": "func start"
+    "dev": "func start && echo 'If you have Docker installed, run \"npm run dev-db\" to start local DB.'",
+    "dev-db": "docker run --name svarut-mongodb -p 27017:27017 -v $PWD/data/db:/data/db --rm -d mongo && echo 'Connect with \"mongodb://localhost:27017/svarut\"'"
   },
   "keywords": [
     "vtfk",
