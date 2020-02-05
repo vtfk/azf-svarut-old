@@ -1,0 +1,17 @@
+# SvarUt's statuses vs ours
+| SvarUt status    | Our status | Description                                                                                                                                                   |
+|------------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MOTTATT          | RUNNING                     | Et kall mottatt på forsendelses-service. En id blir tildelt forsendelsen.                                                                                     |
+| AKSEPTERT        | RUNNING                     | Meldingen er validert og forsendelsesfil dannet.                                                                                                              |
+| VARSLET          | RUNNING                     | Et varsel om forsendelsen er sendt til varslingstjenesten.                                                                                                    |
+| SENDT_PRINT      | RUNNING                     | Forsendelsen er blitt overført til printleverandør.                                                                                                           |
+| SENDT_DIGITALT   | RUNNING                     | Forsendelsen er motatt og sendt slik den skal. Ikke blitt lest enda. Forsendelser med denne status vil kun leveres digitalt og vil aldri gå til print.        |
+| SENDT_SDP        | RUNNING                     | Forsendelsen er motatt og sendt til Sikker digital postkasse.                                                                                                 |
+| LEVERT_SDP       | RUNNING                     | Forsendelsen er motatt og sendt til Sikker digital postkasse. Vi har motatt Leveringskvittering fra SDP. Forsendelsen skal da være tilgjengelig for mottaker. |
+| IKKE_LEVERT      | RUNNING                     | Kun digital leveranse hvor vi ikke har klart å levere forsendelsen.                                                                                           |
+| MANUELT_HANDTERT | RUNNING                     | Forsendelsen er manuelt avsluttet f.eks. pga en feilsituasjon.                                                                                                |
+| LEST             | DONE                        | En forsendelse er lest når hele forsendelsesfilen er lastet ned av mottaker.                                                                                  |
+| PRINTET          | DONE                        | Printkvittering mottatt fra printleverandør eller manuell print bekreftet(via webgrensesnitt).                                                                |
+| KLAR_FOR_MOTTAK  | DONE                        | Venter på at forsendelse skal bli lastet ned av mottaker.                                                                                                     |
+| AVVIST           | ERROR                       | Forsendelsen er ikke validert pga. manglende/korrupt metadata eller fordi forsendelsesfil ikke kunne dannes.                                                  |
+|                  | ERROR_UNKNOWN_SVARUT_STATUS | Unknown status from SvarUt, they might have added a new status                                                                                                |

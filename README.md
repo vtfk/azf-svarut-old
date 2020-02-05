@@ -1,8 +1,15 @@
-# WIP: azf-svarut
-Add descriptive description here...
+# [WIP] azf-svarut
+An Azure Function App for simplifying the SvarUt sending process.  
+Queues letters to be sent and handles sending, retrying on error and notifying on status changes.
 
-### Letter endpoints
-#### POST /letter -  Add letter to queue
+## TODO
+- [ ] Poller for checking SvarUt statuses
+- [ ] Sending QUEUED letters
+- [ ] Retry logic for ERROR'ed letters (SvarUt errors, network failiures, etc.)
+- [ ] Callback function (get all callback URLs in letter and POST to them)
+
+## Letter endpoints
+### `POST /letter` - Add letter to queue
 Bla bla bla
 
 Response:
@@ -12,7 +19,7 @@ Response:
 }
 ```
 
-#### GET /letter/***id*** - Get letter status
+### `GET /letter/:id` - Get letter status
 Response:
 ```json
 {
@@ -20,8 +27,8 @@ Response:
 }
 ```
 
-### Statistics endpoints
-#### GET /stats - Gets statistics
+## Statistics endpoints
+### `GET /stats` - Gets statistics
 Response:
 ```json
 {
@@ -29,7 +36,7 @@ Response:
 }
 ```
 
-#### GET /stats/***service*** - Gets statistics for service (eg. MinElev)
+### `GET /stats/:service` - Gets statistics for service (eg. MinElev)
 Response: 
 ```json
 {
@@ -79,3 +86,9 @@ Using [Azure Function cli](https://www.npmjs.com/package/azure-functions-core-to
 ```
 $ func azure functionapp publish azf-svarut
 ```
+
+# Resources
+[Mapped statuses](./docs/statuses.md)
+
+# LICENSE
+[MIT](LICENSE)
