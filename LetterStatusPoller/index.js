@@ -1,4 +1,3 @@
-require('dotenv').config()
 const { logger } = require('@vtfk/logger')
 const db = require('../lib/db')()
 const svarut = require('../lib/svarut')
@@ -15,6 +14,12 @@ module.exports = async function (context, myTimer) {
     runningLetters = await db.findDocuments({ status: 'RUNNING' })
   } catch (error) {
     logger('error', ['LetterStatusPoller', 'Could not retrieve documents from DB', 'Error', error])
+    throw error
+  }
+
+  if (runningLetters.length === 0) {
+    logger('info', ['LetterStatusPoller', 'No letters with status', 'RUNNING', 'Exiting...'])
+    return
   }
 
   logger('info', ['LetterStatusPoller', 'Found', runningLetters.length, 'with status', 'RUNNING'])
@@ -23,30 +28,39 @@ module.exports = async function (context, myTimer) {
   logger('info', ['LetterStatusPoller', 'Getting status for', runningLetters.length, 'letters'])
   let receivedLetterStatuses
   try {
-    receivedLetterStatuses = await svarut.getStatus(letterIds)
-    receivedLetterStatuses = receivedLetterStatuses.statuser
+    receivedLetterStatuses = (await svarut.getStatus(letterIds)).statuser
   } catch (error) {
     logger('error', ['LetterStatusPoller', 'Could not retrieve status from SvarUt', 'Error', error])
+    throw error
   }
   const updatedLetters = receivedLetterStatuses.filter(letter => statusMapper(letter.status) !== 'RUNNING')
+
+  if (updatedLetters.length === 0) {
+    logger('info', ['LetterStatusPoller', 'No letters with updated status', 'Exiting...'])
+    return
+  }
+
   logger('info', ['LetterStatusPoller', 'Found', updatedLetters.length, 'letters with updated status'])
 
   logger('info', ['LetterStatusPoller', 'Updating DB with', updatedLetters.length, 'updated letters'])
-  const updatedDocuments = await Promise.all(updatedLetters.map(letter => {
+  const updatedDocuments = await Promise.all(updatedLetters.map(svarutLetter => {
+    const originalDocument = runningLetters.find(letter => letter.svarUt.forsendelsesId === svarutLetter.forsendelsesId.id)
+
     try {
       return db.updateDocuments({
-        correlationId: letter.correlationId
+        correlationId: originalDocument.correlationId
       }, {
         $set: {
-          status: statusMapper(letter.status),
+          status: statusMapper(svarutLetter.status),
           svarUt: {
-            lastStatusChange: letter.sisteStatusEndring,
-            status: letter.status
+            lastStatusChange: svarutLetter.sisteStatusEndring,
+            status: svarutLetter.status
           }
         }
       })
     } catch (error) {
       logger('error', ['LetterStatusPoller', 'Could not update document', 'Error', error])
+      throw error
     }
   }))
 
