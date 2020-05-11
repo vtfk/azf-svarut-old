@@ -21,7 +21,7 @@
   "author": "Mats Andreassen <mats.andreassen@vtfk.no>",
   "license": "MIT",
   "devDependencies": {
-    "standard": "14.3.3"
+    "standard": "14.3.4"
   },
   "dependencies": {
     "@vtfk/azure-storage-blob": "^1.0.3",
